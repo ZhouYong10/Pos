@@ -1,0 +1,73 @@
+<%- include header%>
+<header>
+    <ul>
+        <li><a href="/shops">Let's Go</a></li>
+        <li><a href="/">主页</a></li>
+        <li><a href="/shops">商品列表</a></li>
+    </ul>
+    <p><a href="/cart">购物车(<span><%= total %></span>)</a></p>
+</header>
+
+   <div id="shops">
+       <div class="head">购物清单</div>
+       <span id="time">2014年08月27日20:49:15</span>
+       <table cellspacing="1">
+           <tr>
+               <td>分类</td>
+               <td>名称</td>
+               <td>单价(元)</td>
+               <td>单位</td>
+               <td>数量</td>
+               <td>小计</td>
+           </tr>
+           <% var count =0; shops.forEach(function(shop,index){%>
+           <tr>
+               <td><%= shop.category %></td>
+               <td><%= shop.name %></td>
+               <td><%= shop.unitPrice %></td>
+               <td><%= shop.unit %></td>
+               <td><%= shop.num %></td>
+               <td><%= (shop.num%3 + parseInt(shop.num/3)*2) * shop.unitPrice %>元 (原价:<%=shop.num*shop.unitPrice%>元)</td>
+           </tr>
+           <% count = count + shop.num * shop.unitPrice })%>
+       </table>
+       <div class="head">赠送商品</div>
+       <table cellspacing="1">
+           <tr>
+               <td>分类</td>
+               <td>名称</td>
+               <td>数量</td>
+           </tr>
+           <% var givePrice = 0; gives.forEach(function(give,index){%>
+           <tr>
+               <td><%= give.category %></td>
+               <td><%= give.name %></td>
+               <td><%= give.num %></td>
+           </tr>
+           <% givePrice = givePrice + give.num * give.unitPrice }) %>
+       </table>
+   </div>
+    <div id="total">
+    <div>总计：<span><%= count %></span>元</div>
+    <div>节省：<span><%= givePrice %></span>元</div>
+    <a href="/shops?pay=pay">确认</a>
+    </div>
+<%- include footer%>
+
+<script type="text/javascript">
+    function time(){
+        var date = new Date();
+        var year = date.getFullYear(),
+            month = (date.getMonth()+1)<10?"0"+(date.getMonth()+1):date.getMonth()+ 1,
+            day = date.getDate()<10?"0"+date.getDate():date.getDate(),
+            hours = date.getHours(),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds();
+        var time = year+"年"+month+"月"+day+"日"+" "+hours+":"+minutes+":"+seconds;
+        $('#time').text(time);
+    }
+    $(function(){
+        time();
+        setInterval('time()',1000);
+    });
+</script>

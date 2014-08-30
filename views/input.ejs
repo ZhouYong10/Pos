@@ -1,0 +1,15 @@
+<%- include header%>
+<% if(success){ %>
+<div><%= success %></div><br/>
+<% } %>
+<% if(error){ %>
+<div><%= error %></div><br/>
+<% } %>
+    <form method="post">
+        分类:<input type="text" name="category"/><br/>
+        名称:<input type="text" name="name"/><br/>
+        单价:<input type="text" name="unitPrice"/><br/>
+        单位:<input type="text" name="unit"/><br/>
+        <input type="submit" value="提交"/>
+    </form>
+<%- include footer%>

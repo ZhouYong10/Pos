@@ -1,0 +1,35 @@
+<%- include header%>
+<header>
+    <ul>
+        <li><a href="/shops">Let's Go</a></li>
+        <li><a href="/">主页</a></li>
+        <li><a href="/shops">商品列表</a></li>
+    </ul>
+    <p><a class="show" href="/cart">购物车(<span><%= total %></span>)</a></p>
+</header>
+   <div id="shops">
+       <div class="head">饮料</div>
+       <table cellspacing="1">
+           <tr>
+               <td>名称</td>
+               <td>单价(元)</td>
+               <td>单位</td>
+               <td>数量</td>
+               <td>小计</td>
+           </tr>
+           <% var count = 0;shops.forEach(function(shop,index){ %>
+           <tr>
+               <td><%= shop.name %></td>
+               <td><%= shop.unitPrice %></td>
+               <td><%= shop.unit%></td>
+               <td><p id="num"><a class="less" href="/lessOrMore?flag=less&shopName=<%=shop.name%>">-</a><span><%= shop.num %></span><a class="more" href="/lessOrMore?flag=more&shopName=<%=shop.name%>">+</a></p></td>
+               <td><%= (shop.num%3 + parseInt(shop.num/3)*2) * shop.unitPrice %>元 (原价:<%=shop.num*shop.unitPrice%>元)</td>
+           </tr>
+           <% count = count + (shop.num%3 + parseInt(shop.num/3)*2) * shop.unitPrice}) %>
+       </table>
+   </div>
+    <div id="total">
+    <div>总计：<span><%= count %></span>元</div>
+    <a href="/shoppingList">付款</a>
+    </div>
+<%- include footer%>
