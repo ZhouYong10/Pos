@@ -1,0 +1,74 @@
+<%- include header%>
+<div class="container theme-showcase table-responsive" role="main">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">购物清单</div>
+        <div class="panel-body">
+            <span id="time">2014年08月27 20:49:15</span>
+            <table class="table table-bordered">
+                <tr>
+                    <td>分类</td>
+                    <td>名称</td>
+                    <td>单元(元)</td>
+                    <td>单位</td>
+                    <td>数量</td>
+                    <td>小计</td>
+                </tr>
+                <% var count = 0,subtotal = 0;shops.forEach(function(shop,index){%>
+                <tr>
+                    <td><%= shop.category %></td>
+                    <td><%= shop.name %></td>
+                    <td><%= shop.unitPrice %></td>
+                    <td><%= shop.unit %></td>
+                    <td><%= shop.num %></td>
+                    <% if(shop.promotion == "true"){ %>
+                    <td><%= subtotal = (shop.num%3 +parseInt(shop.num/3)*2) * shop.unitPrice %>元(原价：<%= shop.num * shop.unitPrice%>元)</td>
+                    <% }else{%>
+                    <td><%= subtotal = shop.num * shop.unitPrice%>元</td>
+                    <% } %>
+                </tr>
+                <% count += subtotal; }) %>
+            </table>
+        </div>
+        <div class="panel-heading">赠送商品</div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <tr>
+                    <td>分类</td>
+                    <td>名称</td>
+                    <td>数量</td>
+                </tr>
+                <% var giveCount = 0; gives.forEach(function(give,index){ %>
+                <tr>
+                    <td><%= give.category %></td>
+                    <td><%= give.name %></td>
+                    <td><%= give.num %></td>
+                </tr>
+                <% giveCount += give.num * give.unitPrice;}) %>
+            </table>
+            <div class="count">
+                <span>总计：<%= count %></span>
+                <span>节省：<%= giveCount%></span>
+                <a class="btn btn-primary" href="/shopList?pay=pay">确认</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function time(){
+        var date = new Date();
+        var year = date.getFullYear(),
+                month = (date.getMonth()+1)<10?"0"+(date.getMonth()+1):date.getMonth()+ 1,
+                day = date.getDate()<10?"0"+date.getDate():date.getDate(),
+                hours = date.getHours(),
+                minutes = date.getMinutes(),
+                seconds = date.getSeconds();
+        var time = year+"年"+month+"月"+day+"日"+" "+hours+":"+minutes+":"+seconds;
+        $('#time').text(time);
+    }
+    $(function(){
+        time();
+        setInterval('time()',1000);
+    });
+</script>
+<%- include footer%>

@@ -8,6 +8,7 @@ function Shop(shop){
     this.name = shop.name;
     this.unitPrice = shop.unitPrice;
     this.unit = shop.unit;
+    this.promotion = shop.promotion;
 }
 
 module.exports = Shop;
@@ -19,7 +20,8 @@ Shop.prototype.save = function(callback){
         category:this.category,
         name:this.name,
         unitPrice:this.unitPrice,
-        unit:this.unit
+        unit:this.unit,
+        promotion:this.promotion
     };
     //打开数据库
     mongodb.open(function(err,db){

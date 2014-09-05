@@ -18,7 +18,7 @@ module.exports = function(app){
         res.render('index',{title:"主页",total:req.session.total});
     });
 
-    app.get('/shops',function(req,res){
+    app.get('/shopList',function(req,res){
         if(req.query.pay == "pay"){
             req.session.total = 0;
             req.session.cart = [];
@@ -28,7 +28,7 @@ module.exports = function(app){
             if(err){
                 shops = [];
             }
-            res.render('shops',{
+            res.render('shopList',{
                 title:"商品列表",
                 total:req.session.total,
                 shops:shops
@@ -44,41 +44,23 @@ module.exports = function(app){
         });
     });
 
-    app.get('/shoppingList',function(req,res){
+    app.get('/cartList',function(req,res){
         var shops = req.session.cart;
         var gives = [];
         _.each(shops,function(shop){
-            if(shop.num >= 3){
+            if(shop.promotion == "true" && shop.num >= 3){
                 var give = _.clone(shop);
                 give.num = parseInt(give.num/3);
                 gives.push(give);
             }
         });
-        res.render('shoppingList',{
+        res.render('cartList',{
             title:"购物清单",
             total:req.session.total,
             shops:shops,
             gives:gives
         });
-//        gives = _.filter(gives,function(give){
-//            return give.num >= 3;
-//        });
-//
-//        gives = _.each(gives,function(give){
-//            give.num = parseInt(give.num/3);
-//        });
-
-//        var gives = _.filter(shops,function(shop){
-//            return shop.num >= 3;
-//        });
-//
-//        var newGives = _.each(gives,function(give){
-//            give.num = parseInt(give.num/3);
-//        });
-//        console.log('===================shops'+JSON.stringify(shops));
-//        console.log('==================================shops'+JSON.stringify(req.session.cart));
-//        console.log('====================================gieves'+JSON.stringify(gives));
-    });
+ });
 
     app.post('/addCart',function(req,res){
         var shop = req.body.shop;
@@ -95,9 +77,6 @@ module.exports = function(app){
         req.session.cart = cart;
         var total = req.session.total + 1;
         req.session.total = total;
-//        var total = _.reduce(cart,function(memo,shop){
-//            return memo + shop.num;
-//        },0);
         res.writeHead(200,{'Content-type':'text/plain'});
         res.write(total + "");
         res.end();
@@ -124,7 +103,7 @@ module.exports = function(app){
         req.session.cart = shops;
 
         if(req.session.total == 0){
-            res.redirect('/shops');
+            res.redirect('/shopList');
         }else{
             res.redirect('/cart');
         }
@@ -134,33 +113,31 @@ module.exports = function(app){
 
 
 
-    app.get('/input',function(req,res){
-        res.render('input',{
+    app.get('/inputShopInfo',function(req,res){
+        res.render('inputShopInfo',{
             title:"商品录入",
             success:req.flash('success').toString(),
             error:req.flash('error').toString()
         });
     });
 
-    app.post('/input',function(req,res){
-        var category = req.body.category,
-            name = req.body.name,
-            unitPrice = req.body.unitPrice,
-            unit = req.body.unit;
-        console.log(category+name+unitPrice+unit);
+    app.post('/inputShopInfo',function(req,res){
         var shop = new Shop({
-            category:category,
-            name:name,
-            unitPrice:unitPrice,
-            unit:unit
+            category:req.body.category,
+            name:req.body.name,
+            unitPrice:req.body.unitPrice,
+            unit:req.body.unit,
+            promotion:req.body.promotion
         });
+
+        console.log('+++++++++++++++++++++++++++++++++'+shop.promotion);
         shop.save(function(err){
             if(err){
                 req.flash('error',err);
-                return res.redirect('/input');
+                return res.redirect('/inputShopInfo');
             }
             req.flash('success',"商品录入成功");
-            res.redirect('/input');
+            res.redirect('/inputShopInfo');
         });
     });
 };

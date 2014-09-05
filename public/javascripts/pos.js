@@ -5,7 +5,7 @@ $(function(){
     /*
    shops页面
      */
-    $('table td .add').click(function(){
+    $('.addCart').click(function(){
         var temp = [];
        $($(this).parent().siblings()).each(function(){
            temp.push($(this).text());
@@ -14,10 +14,11 @@ $(function(){
             category:temp[0],
             name:temp[1],
             unitPrice:temp[2],
-            unit:temp[3]
+            unit:temp[3],
+            promotion:temp[4]
         };
         $.post('/addCart',{shop:shop},function(data){
-            $('header p span').text(data);
+            $('#cart span').text(data);
         });
     });
 
