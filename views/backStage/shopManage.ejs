@@ -1,0 +1,32 @@
+<%- include header%>
+
+    <div class="col-md-12 shopManage">
+        <p>商品信息管理</p>
+        <a type="button" class="btn btn-primary" href="/addShop">添加商品</a>
+
+        <table class="table table-hover table-responsive">
+            <tr>
+                <td>序号</td>
+                <td>商品名称</td>
+                <td>商品数量</td>
+                <td>单价(元)</td>
+                <td>单位</td>
+                <td>发布时间</td>
+                <td>操作</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>可口可乐</td>
+                <td>112</td>
+                <td>3</td>
+                <td>瓶</td>
+                <td>2014-09-16</td>
+                <td>
+                    <a href="/shopInfo">详情</a>
+                    <a href="#">删除</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<%- include footer%>

@@ -113,9 +113,40 @@ module.exports = function(app){
 
 
 
+
+    app.get('/admin',function(req,res){
+        res.render('backStage/shopManage',{
+            title:"商品信息管理"
+        });
+    });
+
+    app.get('/addShop',function(req,res){
+        res.render('backStage/addShop',{
+            title:"添加商品"
+        });
+    });
+
+    app.get('/addShopAttr',function(req,res){
+        res.render('backStage/addShopAttr',{
+            title:"添加属性"
+        });
+    });
+
+    app.get('/shopInfo',function(req,res){
+        res.render('backStage/shopInfo',{
+            title:"商品信息管理"
+        });
+    });
+
+
+
+
+
+
     app.get('/inputShopInfo',function(req,res){
         res.render('inputShopInfo',{
             title:"商品录入",
+            total:0,
             success:req.flash('success').toString(),
             error:req.flash('error').toString()
         });
@@ -129,8 +160,6 @@ module.exports = function(app){
             unit:req.body.unit,
             promotion:req.body.promotion
         });
-
-        console.log('+++++++++++++++++++++++++++++++++'+shop.promotion);
         shop.save(function(err){
             if(err){
                 req.flash('error',err);
