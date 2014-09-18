@@ -115,8 +115,23 @@ module.exports = function(app){
 
 
     app.get('/admin',function(req,res){
-        res.render('backStage/shopManage',{
-            title:"商品信息管理"
+        var page = req.query.p ? parseInt(req.query.p) : 1;
+        //查询并返回10条数据
+        Shop.getTen(page,function(err,shops,total){
+            if(err){
+                req.flash('error',err);
+                return res.redirect('/admin');
+            }
+            console.log(shops);
+            res.render('backStage/shopManage',{
+                title:"商品信息管理",
+                shops: shops,
+                page: page,
+                isFirstPage: (page - 1) == 0,
+                isLastPage: ((page - 1)*10 + shops.length) == total,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
         });
     });
 
@@ -138,6 +153,9 @@ module.exports = function(app){
         });
     });
 
+    app.get('deleteShop',function(req,res){
+
+    });
 
 
 
